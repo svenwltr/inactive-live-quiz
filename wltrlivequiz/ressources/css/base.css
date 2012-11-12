@@ -1,0 +1,106 @@
+body {
+	font-family: sans-serif;
+	background: #F2F4F0;
+	
+	cursor: default;
+}
+
+a {
+	cursor: pointer;
+}
+
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.overlay-error {
+	background: #E1A19D;
+	
+}
+
+.overlay-wait {
+	background: #F2F4F0;
+}
+
+.overlay div {
+	width: 500px;
+	margin: 122px auto;
+	padding: 10px;
+	
+	background: #BEC8B7;
+	border: 2px solid #57654D;
+}
+
+.overlay h1 {
+	opacity: 1;
+	font-size: xx-large;
+	color: #3E4837;
+	font-weight: bold;
+}
+
+.overlay p {
+	margin-top: 10px;
+}
+
+
+#head {
+	background: #BEC8B7;
+	height: 40px;
+	border-bottom: 2px solid #3E4837;
+	color: #3E4837;
+}
+
+#head h1 {
+	font-size: 30px;
+	padding: 5px 10px;
+	float: left;
+}
+
+#head ul {
+	float: right;
+	padding: 11px;
+}
+
+#head li {
+	display: inline;
+	font-size: 14px;
+	padding: 11px;
+}
+
+#head a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#head a.active {
+	text-decoration: underline;
+}
+
+#body {
+}
+
+
+.box {
+	background: #BEC8B7;
+	width: 500px;
+	margin: 80px auto;
+	padding: 10px;
+	
+	border: 2px solid #57654D;
+}
+
+.box h1 {
+	opacity: 1;
+	font-size: xx-large;
+	color: #3E4837;
+	font-weight: bold;
+}
+
+.box p {
+	margin-top: 10px;
+}

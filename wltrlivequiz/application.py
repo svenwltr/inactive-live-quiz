@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import time
 
 
 import tornado.httpserver
@@ -51,7 +50,6 @@ class StaticFileHandler(tornado.web.StaticFileHandler):
     INDEX = "index.html"
     
     def get(self, path, include_body=True):
-        #time.sleep(1) # for development (checking slow connections)
         if path == "":
             path = StaticFileHandler.INDEX
         elif path == StaticFileHandler.INDEX:

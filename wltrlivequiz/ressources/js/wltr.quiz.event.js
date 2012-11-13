@@ -1,3 +1,32 @@
+/**
+ * Event dispatcher.
+ * 
+ * This module 'quiz.event' provides the event dispatcher for this application.
+ * All communication within this app are handled through events, which are
+ * handled here. There are three important functions:
+ * 
+ *  - quiz.event.register(event, func);
+ *      Registers a new callback for a certain 'event' (string). Every time an
+ *      event is triggered, all registered callbacks will be called with an
+ *      event object as argument.
+ *      
+ *  - quiz.event.unregister(event, ident);
+ *      TODO
+ *   
+ *  - quiz.event.trigger(event);
+ *      Triggers a certain event (string). Everybody can trigger every event
+ *      and then all registered callbacks will be called.
+ * 
+ * The module also take care about the conditions for the 'ready' event.
+ * 
+ * 
+ * @author: Sven Walter <sven.walter@wltr.eu>
+ * @since: 14 Nov 2012
+ * @url: https://github.com/svenwltr/wltr-live-quiz
+ * 
+ */
+
+
 quiz.event = (new function()
 {
 	var module = {};
@@ -6,34 +35,34 @@ quiz.event = (new function()
 		
 	};
 	
-	module.register = function(name, func)
+	module.register = function(event, func)
 	{
-		if(events[name] == undefined)
+		if(events[event] == undefined)
 		{
-			events[name] = new Array();
+			events[event] = new Array();
 		}
-		events[name].push(func);
+		events[event].push(func);
 	};
 	
-	module.unregister = function(name, ident)
+	module.unregister = function(event, ident)
 	{
 		
 	};
 	
-	module.trigger = function(name, data)
+	module.trigger = function(event, data)
 	{
-		console.log("Trigger: " + name);
+		console.log("Trigger: " + event, data);
 		e = {
-			name: name,
+			event: event,
 			data: data,
 		}
 		
-		if(events[name] == undefined) {
+		if(events[event] == undefined) {
 			return;
 		}
 		
-		for (var i = 0; i < events[name].length; i++) {
-		    cb = events[name][i];
+		for (var i = 0; i < events[event].length; i++) {
+		    cb = events[event][i];
 		    cb(e);
 		}
 	};

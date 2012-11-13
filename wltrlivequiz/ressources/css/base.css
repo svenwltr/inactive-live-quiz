@@ -3,6 +3,8 @@ body {
 	background: #F2F4F0;
 	
 	cursor: default;
+	
+	overflow-y: scroll;
 }
 
 a {

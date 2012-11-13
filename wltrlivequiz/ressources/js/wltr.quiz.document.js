@@ -20,7 +20,8 @@ quiz.document = (new function(){
 
 		$("a").removeClass("active");
 		$("a[href=#"+name+"]").addClass("active");
-
+		
+		quiz.event.trigger("set_tab", {"name": name});
 	}
 	
 	$("a").live("click", function(e){
@@ -76,14 +77,19 @@ quiz.document.display = (new function(){
 		quiz.document.set_body(quiz.loader.get("display_wait"));
 		quiz.document.set_title("warte");
 		
-		$("#head").css("opacity", "0.1");
-		
-		$("#head").hover(function(){
-			$("#head").animate({"opacity": "1"}, quiz.c.FADE_SPEED);
-		}, function(){
-			$("#head").animate({"opacity": "0.1"}, quiz.c.FADE_SPEED);
-		});
-	}
+	};
+	
+	return module;
+}());
+
+
+quiz.document.moderator = (new function(){
+	var module = {};
+	
+	module.activate = function() {
+		quiz.document.set_body(quiz.loader.get("moderator"));
+		quiz.document.set_title("Moderator");
+	};
 	
 	return module;
 }());

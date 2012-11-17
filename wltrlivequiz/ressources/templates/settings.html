@@ -1,0 +1,47 @@
+<form id="settings-form">
+    <h1>Quiz starten</h1>
+    <p>
+        <label for="id-settings-form-preset">lade Voreinstellungen</label>
+        <select name="preset" id="id-settings-form-preset">
+        </select>
+    </p>
+    <hr>
+    <p>
+        <label for="id-settings-form-title">Titel</label>
+        <input name="title" id="id-settings-form-title">
+    </p>
+    <p>
+        <label for="id-settings-form-mode">Modus</label>
+        <select name="mode" id="id-settings-form-mode">
+        </select>
+    </p>
+    <p>
+        <label for="id-settings-form-mode">Katalog</label>
+        <select name="mode" id="id-settings-form-mode">
+        </select>
+    </p>
+    <p>
+        <label for="id-settings-form-questions">Fragen pro Runde</label>
+        <input name="questions" id="id-settings-form-questions">
+    </p>
+    <p id="settings-form-specials">
+        <label>Soderrunden <span>Name / Runden min. / Runden max.</span></label>
+        <span class="row">
+            <input name="specials-name[]" style="width: 70%">
+            <input name="specials-min[]" style="width: 15%">
+            <input name="specials-max[]" style="width: 15%">
+        </span>
+    </p>
+    <hr>
+    <p id="settings-form-teams">
+        <label>Teams</label>
+        <span class="row">
+            <input name="teams[]">
+        </span>
+    </p>
+    <hr>
+    <p>
+        <input type="submit" id="settings-form-submit" value="Quiz starten!">
+    </p>
+</form>
+

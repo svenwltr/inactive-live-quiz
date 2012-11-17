@@ -11,7 +11,7 @@
  */
 
 
-quiz.loader = (new function()
+quiz.templates = (new function()
 {
 	var module = {};
 
@@ -24,13 +24,16 @@ quiz.loader = (new function()
 		(function(){ /* avoid closure */
 			var name = quiz.c.TEMPLATES[i]
 			jqXHRs.push($.get("templates/" + name + ".html", function(data){
+				/*tab = $(data);
+				tab.hide();
+				$("#body").append(tab);*/
 				templates[name] = data;
 			}));
 		})();
 	};
 	
 	$.when.apply(null, jqXHRs).then(function(){
-		quiz.event.trigger("loader_done");
+		quiz.event.trigger("templates_done");
 	})
 	
 	module.get = function(name) {

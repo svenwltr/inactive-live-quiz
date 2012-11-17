@@ -18,6 +18,14 @@ quiz.socket = (new function(){
 	
 	var socket;
 	
+	module.send = function(event, data)
+	{
+		var e = [ event, data ];
+		socket.send(JSON.stringify(e));
+		console.log("WebSocket:", e);
+	};
+	
+
 	
 	var onopen = function () {
 		quiz.event.trigger("socket_open");
@@ -33,6 +41,12 @@ quiz.socket = (new function(){
 
 	
 	var onmessage = function (e) {
+		var j = eval(e.data);
+		var event = j[0];
+		var data = j[1];
+		
+		event = "ws_" + event;
+		quiz.event.trigger(event, data);
 	};
 	
 	

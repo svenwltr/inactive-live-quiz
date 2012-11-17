@@ -52,10 +52,6 @@ quiz.event = (new function()
 	module.trigger = function(event, data)
 	{
 		console.log("Trigger: " + event, data);
-		e = {
-			event: event,
-			data: data,
-		}
 		
 		if(events[event] == undefined) {
 			return;
@@ -63,7 +59,7 @@ quiz.event = (new function()
 		
 		for (var i = 0; i < events[event].length; i++) {
 		    cb = events[event][i];
-		    cb(e);
+		    cb(event, data);
 		}
 	};
 	
@@ -74,7 +70,7 @@ quiz.event = (new function()
 
 quiz.event.ready = (new function(){
 	var required = {
-		loader: false,
+		templates: false,
 		dom: false,
 		socket: false,
 	};
@@ -82,13 +78,13 @@ quiz.event.ready = (new function(){
 	var callback = function(name){
 		required[name] = true
 		
-		if(required.loader && required.dom && required.socket) {
+		if(required.templates && required.dom && required.socket) {
 			quiz.event.trigger("ready"); 
 		};
 	};
 	
-	quiz.event.register("loader_done", function(e){
-		callback("loader");
+	quiz.event.register("templates_done", function(e){
+		callback("templates");
 	});
 	
 	quiz.event.register("socket_open", function(e){

@@ -87,7 +87,7 @@ a {
 }
 
 
-.box {
+.box, form {
 	background: #BEC8B7;
 	width: 500px;
 	margin: 80px auto;
@@ -96,13 +96,87 @@ a {
 	border: 2px solid #57654D;
 }
 
-.box h1 {
+.box h1, form h1 {
 	opacity: 1;
 	font-size: xx-large;
 	color: #3E4837;
 	font-weight: bold;
+	margin-bottom: 10px;
 }
 
 .box p {
-	margin-top: 10px;
+	margin-bottom: 10px;
 }
+
+
+
+form p {
+	padding-bottom: 10px;
+	clear: both;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #3E4837;
+    padding-bottom: 10px;
+    clear: both;
+    display: block;
+}
+
+form label {
+	color: #3E4837;
+	display: block;
+
+}
+
+form label span {
+	font-size: small;
+	padding-left: 10px;
+	color: #6F8163;
+}
+
+form input, form select {
+    border: 1px solid #3E4837;
+	padding: 4px 8px;
+	box-sizing: border-box;
+	background: #F2F4F0;
+	width: 100%;
+}
+
+form input[type=submit] {
+	display: block;
+	padding: 7px 14px;
+	background: #8B9D7A;
+	border: 1px solid #3E4837;
+	width: 100%;
+	font-size: 110%;
+	cursor: pointer;
+}
+
+
+form span.row {
+	display: block;
+	clear: both;
+    width: 100%;
+    padding-bottom: 3px;
+}
+
+
+form span.row input {
+    float: left; /* to hide spaces between tags */
+    outline: 1px solid #3E4837;
+    border: none;
+}
+
+form span.row:after { /* clearfix */
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+
+
+

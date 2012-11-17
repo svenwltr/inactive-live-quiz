@@ -68,10 +68,13 @@ quiz.document = (new function(){
 	 * listener: on ready, open first tab
 	 */
 	quiz.event.register("ready", function(){
+		hash = window.location.hash.slice(1)
+		if(!hash)
+			hash = "display";
 		$(".overlay").fadeOut(quiz.c.FADE_SPEED, function(){
 			$(".overlay").remove();
 		});
-		quiz.document.set_tab("display");
+		quiz.document.set_tab(hash);
 	});
 	
 	/**
@@ -90,7 +93,7 @@ quiz.document = (new function(){
 quiz.document.overlay = (new function(){
 	
 	/**
-	 * private: get_overlay_tpl() - Creates a new overlay template. quiz.loader
+	 * private: get_overlay_tpl() - Creates a new overlay template. quiz.templates
 	 *     is not used, because it could throw errors.
 	 */
 	var get_overlay_tpl = function() {
@@ -113,10 +116,10 @@ quiz.document.overlay = (new function(){
 	/**
 	 * listener: on error, display it
 	 */
-	quiz.event.register("error", function(e){
+	quiz.event.register("error", function(event, data){
 		tpl = get_error_tpl();
-		tpl.find("h1").text(e.data.title);
-		tpl.find("p").text(e.data.text);
+		tpl.find("h1").text(data.title);
+		tpl.find("p").text(data.text);
 		quiz.document.set_body(tpl);
 	});
 	
@@ -135,10 +138,30 @@ quiz.document.display = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.document.set_body(quiz.loader.get("display_wait"));
+		quiz.document.set_body(quiz.templates.get("prepare"));
 		quiz.document.set_title("warte");
 		
 	};
+	
+	
+	quiz.event.register("ws_setup_teamupdate", function(event, data){
+		
+		var ul = $("<ul>");
+		
+		for (var i=0;i<data.length;i++) {
+			var li = $("<li>");
+			li.text(data[i]);
+			ul.append(li);
+		};
+		
+		$("#prepare-teams ul").remove();
+		$("#prepare-teams").append(ul);
+		
+		if(data.length==0)
+			$("#prepare-teams").fadeOut();
+		else
+			$("#prepare-teams").fadeIn();
+	});
 	
 	/* END */
 	return module;
@@ -152,10 +175,70 @@ quiz.document.moderator = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.document.set_body(quiz.loader.get("moderator"));
+		quiz.document.set_body(quiz.templates.get("settings"));
 		quiz.document.set_title("Moderator");
 	};
 	
 	/* END */
 	return module;
 }());
+
+
+quiz.document.moderator.setup = (new function(){
+	
+	var FORM_INPUTS = "#settings-form input, #settings-form select";
+	var FORM = "#settings-form";
+	
+	
+	var validate_form = function()
+	{
+		quiz.socket.send("setup_validate", quiz.utils.get_form_data(FORM));
+	}
+	
+	var submit_form = function()
+	{
+		quiz.socket.send("setup_submit", quiz.utils.get_form_data(FORM));
+	}
+	
+	$(FORM).live('submit', function(){
+		submit_form();
+		return false;
+	});
+	
+	$(FORM_INPUTS).live("blur", function(){
+		validate_form();
+	});
+	
+	$("#settings-form-specials input, #settings-form-teams input").live("keyup", function(){
+		var row = $(this).parents(".row");
+		//var inputs = row.find("input");
+		var rows = row.siblings(".row").add(row);
+		
+		
+		rows.each(function(){
+			var row = $(this);
+			var is_empty = true;
+			var is_last = row.is(':last-child')
+			
+			row.find("input").each(function(){
+				if($(this).val() != '')
+					is_empty = false;
+			});
+			
+			if(is_empty && !is_last) {
+				row.remove();
+			}
+
+			if(is_last && !is_empty ) {
+				var clone = row.clone();
+				clone.hide();
+				clone.find("input").each(function(){
+					$(this).val("");
+				});
+				row.after(clone);
+				clone.slideDown();
+			}
+		});
+	});
+}());
+

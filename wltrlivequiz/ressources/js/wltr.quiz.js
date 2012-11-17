@@ -32,7 +32,7 @@ function require(name) {
 $(document).ready(function() {
 	require("base");
 	require("event");
-	require("loader");
+	require("templates");
 	require("document");
 	require("socket");
 });

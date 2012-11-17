@@ -24,32 +24,18 @@
 quiz.document = (new function(){
 	var module = {};
 	
-	/**
-	 * public: .set_title(text)
-	 */
-	module.set_title = function(text) {
-		document.title = quiz.c.TITLE + text;
-	}
-	
-	/**
-	 * public: .set_body(html)
-	 */
-	module.set_body = function(html) {
-		$("#body").fadeOut(quiz.c.FADE_SPEED, function(){
-			$("#body").html(html);
-			$("#body").fadeIn(quiz.c.FADE_SPEED);
-		});
+	module.set_page = function(page) {
+		module[page].activate();
+
+		$("a").removeClass("active");
+		$("a[href=#"+name+"]").addClass("active");
+		quiz.event.trigger("set_page", {"name": name});
 	}
 	
 	/**
 	 * public: .set_tab(name)
 	 */
 	module.set_tab = function(name) {
-		quiz.document[name].activate();
-
-		$("a").removeClass("active");
-		$("a[href=#"+name+"]").addClass("active");
-		
 		quiz.event.trigger("set_tab", {"name": name});
 	}
 	
@@ -59,9 +45,9 @@ quiz.document = (new function(){
 	$("a").live("click", function(e){
 		elem = $(this);
 		href = $(this).attr("href");
-		tab = href.substr(1);
+		name = href.substr(1);
 		
-		module.set_tab(tab);
+		module.set_page(name);
 	});
 	
 	/**
@@ -74,13 +60,13 @@ quiz.document = (new function(){
 		$(".overlay").fadeOut(quiz.c.FADE_SPEED, function(){
 			$(".overlay").remove();
 		});
-		quiz.document.set_tab(hash);
+		
+		module.set_page(hash);
 	});
 	
 	/**
 	 * init module
 	 */
-	module.set_title("Loading");
 	
 	/* END */
 	return module;
@@ -138,8 +124,7 @@ quiz.document.display = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.document.set_body(quiz.templates.get("prepare"));
-		quiz.document.set_title("warte");
+		quiz.templates.show("prepare");
 		
 	};
 	
@@ -175,8 +160,7 @@ quiz.document.moderator = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.document.set_body(quiz.templates.get("settings"));
-		quiz.document.set_title("Moderator");
+		quiz.templates.show("settings");
 	};
 	
 	/* END */

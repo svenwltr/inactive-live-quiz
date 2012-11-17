@@ -16,7 +16,7 @@ quiz.templates = (new function()
 	var module = {};
 
 	var jqXHRs = [];
-	var templates = new Array();
+	module.templates = $();
 	
 	/* load templates */
 	for(i in quiz.c.TEMPLATES)
@@ -24,10 +24,13 @@ quiz.templates = (new function()
 		(function(){ /* avoid closure */
 			var name = quiz.c.TEMPLATES[i]
 			jqXHRs.push($.get("templates/" + name + ".html", function(data){
-				/*tab = $(data);
+				tab = $("<div>");
+				tab.addClass("tab");
+				tab.attr("tab", name);
+				tab.html(data);
 				tab.hide();
-				$("#body").append(tab);*/
-				templates[name] = data;
+				$("#body").append(tab);
+				module.templates = module.templates.add(tab);
 			}));
 		})();
 	};
@@ -36,8 +39,9 @@ quiz.templates = (new function()
 		quiz.event.trigger("templates_done");
 	})
 	
-	module.get = function(name) {
-		return templates[name];
+	module.show = function(name) {
+		module.templates.hide();
+		module.templates.filter("[tab="+name+"]").show();
 	}
 	
 	return module;

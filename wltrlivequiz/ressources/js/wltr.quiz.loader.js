@@ -1,3 +1,16 @@
+/**
+ * Template loader.
+ * 
+ * Loads all templates, for later use.
+ * 
+ * 
+ * @author: Sven Walter <sven.walter@wltr.eu>
+ * @since: 14 Nov 2012
+ * @url: https://github.com/svenwltr/wltr-live-quiz
+ * 
+ */
+
+
 quiz.loader = (new function()
 {
 	var module = {};

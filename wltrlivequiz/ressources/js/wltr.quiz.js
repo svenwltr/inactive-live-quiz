@@ -13,6 +13,8 @@
  * @since: 14 Nov 2012
  * @url: https://github.com/svenwltr/wltr-live-quiz
  * 
+ * @todo: Speed up, loading text!
+ * 
  */
 
 function require(name) {
@@ -25,12 +27,12 @@ function require(name) {
 	});
 }
 
-/* timeout, so the page don't block and the loading text will be displayed
- * faster. Not sure if this speed up is worth it. */
-setTimeout(function(){
+/* wait for ready, so the page don't block and the loading text will be
+ * displayed faster. */
+$(document).ready(function() {
 	require("base");
 	require("event");
 	require("loader");
 	require("document");
 	require("socket");
-}, 100);
+});

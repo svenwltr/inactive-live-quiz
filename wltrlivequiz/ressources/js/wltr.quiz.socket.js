@@ -1,9 +1,20 @@
+/**
+ * Websocket handler.
+ * 
+ * Opens the socket to the server and handles all requests.
+ * 
+ * 
+ * @author: Sven Walter <sven.walter@wltr.eu>
+ * @since: 14 Nov 2012
+ * @url: https://github.com/svenwltr/wltr-live-quiz
+ * 
+ */
 
 
 quiz.socket = (new function(){
 	var module = {};
 	
-	var URI = 'ws://localhost:8080/ws';
+	var URI = quiz.c.WEBSOCKET;
 	
 	var socket;
 	

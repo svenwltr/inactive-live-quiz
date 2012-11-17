@@ -19,5 +19,6 @@ quiz.c = {
 	TEMPLATES: ["display_wait", "moderator"],
 	TITLE: "wltr Live Quiz :: ",
 	FADE_SPEED: 200,
+	WEBSOCKET: 'ws://localhost:8080/ws',
 
 }

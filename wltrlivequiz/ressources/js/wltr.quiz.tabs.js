@@ -11,12 +11,12 @@
  */
 
 
-quiz.templates = (new function()
+quiz.tabs = (new function()
 {
 	var module = {};
 
 	var jqXHRs = [];
-	module.templates = $();
+	module.tabs = $();
 	
 	/* load templates */
 	for(i in quiz.c.TEMPLATES)
@@ -30,18 +30,18 @@ quiz.templates = (new function()
 				tab.html(data);
 				tab.hide();
 				$("#body").append(tab);
-				module.templates = module.templates.add(tab);
+				module.tabs = module.tabs.add(tab);
 			}));
 		})();
 	};
 	
 	$.when.apply(null, jqXHRs).then(function(){
-		quiz.event.trigger("templates_done");
+		quiz.event.trigger("tabs_done");
 	})
 	
 	module.show = function(name) {
-		module.templates.hide();
-		module.templates.filter("[tab="+name+"]").show();
+		module.tabs.hide();
+		module.tabs.filter("[tab="+name+"]").show();
 	}
 	
 	return module;

@@ -70,7 +70,7 @@ quiz.event = (new function()
 
 quiz.event.ready = (new function(){
 	var required = {
-		templates: false,
+		tabs: false,
 		dom: false,
 		socket: false,
 	};
@@ -78,13 +78,13 @@ quiz.event.ready = (new function(){
 	var callback = function(name){
 		required[name] = true
 		
-		if(required.templates && required.dom && required.socket) {
+		if(required.tabs && required.dom && required.socket) {
 			quiz.event.trigger("ready"); 
 		};
 	};
 	
-	quiz.event.register("templates_done", function(e){
-		callback("templates");
+	quiz.event.register("tabs_done", function(e){
+		callback("tabs");
 	});
 	
 	quiz.event.register("socket_open", function(e){

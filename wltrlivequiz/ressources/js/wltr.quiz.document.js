@@ -79,7 +79,7 @@ quiz.document = (new function(){
 quiz.document.overlay = (new function(){
 	
 	/**
-	 * private: get_overlay_tpl() - Creates a new overlay template. quiz.templates
+	 * private: get_overlay_tpl() - Creates a new overlay template. quiz.tabs
 	 *     is not used, because it could throw errors.
 	 */
 	var get_overlay_tpl = function() {
@@ -124,7 +124,7 @@ quiz.document.display = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.templates.show("prepare");
+		quiz.tabs.show("prepare");
 		
 	};
 	
@@ -160,7 +160,7 @@ quiz.document.moderator = (new function(){
 	 * public .activate() - Activates this tab.
 	 */
 	module.activate = function() {
-		quiz.templates.show("settings");
+		quiz.tabs.show("settings");
 	};
 	
 	/* END */

@@ -215,6 +215,7 @@ quiz.document.moderator.setup = (new function(){
 			});
 			
 			if(is_empty && !is_last) {
+				row.next(".row").find("input").first().select();
 				row.remove();
 			}
 

@@ -17,6 +17,12 @@ class QuizWebSocket(tornado.websocket.WebSocketHandler):
         for ws in QuizWebSocket.all:
             ws.send(event, data)
 
+    @staticmethod
+    def forward(sender, event, data):
+        for ws in QuizWebSocket.all:
+            if ws is sender:
+                continue
+            ws.send(event, data)
     
     def open(self): #@ReservedAssignment
         QuizWebSocket.all.append(self)
@@ -36,7 +42,7 @@ class QuizWebSocket(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         try:
             event, data = json.loads(message)
-            quiz.recv(event, data)
+            quiz.recv(self, event, data)
         except Exception, e:
             self.exception(e)
     

@@ -29,15 +29,15 @@ quiz.document = (new function(){
 
 		$("a").removeClass("active");
 		$("a[href=#"+name+"]").addClass("active");
-		quiz.event.trigger("set_page", {"name": name});
+		quiz.event.trigger("session.set_page", name);
 	}
 	
 	/**
 	 * public: .set_tab(name)
 	 */
-	module.set_tab = function(name) {
-		quiz.event.trigger("set_tab", {"name": name});
-	}
+	/*module.set_tab = function(name) {
+		quiz.event.trigger("session.set_tab", name);
+	}*/
 	
 	/**
 	 * listener: click on tab links
@@ -53,7 +53,7 @@ quiz.document = (new function(){
 	/**
 	 * listener: on ready, open first tab
 	 */
-	quiz.event.register("ready", function(){
+	quiz.event.register("session.ready", function(){
 		hash = window.location.hash.slice(1)
 		if(!hash)
 			hash = "display";
@@ -102,7 +102,7 @@ quiz.document.overlay = (new function(){
 	/**
 	 * listener: on error, display it
 	 */
-	quiz.event.register("error", function(event, data){
+	quiz.event.register("session.error", function(event, data){
 		tpl = get_error_tpl();
 		tpl.find("h1").text(data.title);
 		tpl.find("p").text(data.text);
@@ -129,20 +129,20 @@ quiz.document.display = (new function(){
 	};
 	
 	
-	quiz.event.register("ws_setup_teamupdate", function(event, data){
-		
+	quiz.event.register("setup.form_update", function(event, data){
+		teams = data['teams'];
 		var ul = $("<ul>");
 		
-		for (var i=0;i<data.length;i++) {
+		for (var i=0;i<teams.length;i++) {
 			var li = $("<li>");
-			li.text(data[i]);
+			li.text(teams[i]);
 			ul.append(li);
 		};
 		
 		$("#prepare-teams ul").remove();
 		$("#prepare-teams").append(ul);
 		
-		if(data.length==0)
+		if(teams.length==0)
 			$("#prepare-teams").fadeOut();
 		else
 			$("#prepare-teams").fadeIn();
@@ -173,24 +173,29 @@ quiz.document.moderator.setup = (new function(){
 	var FORM_INPUTS = "#settings-form input, #settings-form select";
 	var FORM = "#settings-form";
 	
-	
-	var validate_form = function()
-	{
-		quiz.socket.send("setup_validate", quiz.utils.get_form_data(FORM));
+	var data = function() {
+		return quiz.utils.get_form_data(FORM);
 	}
 	
-	var submit_form = function()
+	var form_update = function()
 	{
-		quiz.socket.send("setup_submit", quiz.utils.get_form_data(FORM));
+		/* TODO delay sending */
+		quiz.event.trigger("setup.form_update", data(), true);
+	}
+	
+	var quiz_start = function()
+	{
+		quiz.event.trigger("setup.form_update", data(), true);
+		quiz.event.trigger("setup.quiz_start", null, true);
 	}
 	
 	$(FORM).live('submit', function(){
-		submit_form();
+		quiz_start();
 		return false;
 	});
 	
-	$(FORM_INPUTS).live("blur", function(){
-		validate_form();
+	$(FORM_INPUTS).live("keyup", function(){
+		form_update();
 	});
 	
 	$("#settings-form-specials input, #settings-form-teams input").live("keyup", function(){

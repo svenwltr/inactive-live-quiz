@@ -49,10 +49,14 @@ quiz.event = (new function()
 		
 	};
 	
-	module.trigger = function(event, data)
+	module.trigger = function(event, data, send)
 	{
-		console.log("Trigger: " + event, data);
+		console.log("Trigger: " + event, data, send);
 		
+		if(send) {
+			quiz.socket.send(event, data);
+		}
+
 		if(events[event] == undefined) {
 			return;
 		}
@@ -61,6 +65,7 @@ quiz.event = (new function()
 		    cb = events[event][i];
 		    cb(event, data);
 		}
+		
 	};
 	
 	
@@ -79,15 +84,15 @@ quiz.event.ready = (new function(){
 		required[name] = true
 		
 		if(required.tabs && required.dom && required.socket) {
-			quiz.event.trigger("ready"); 
+			quiz.event.trigger("session.ready"); 
 		};
 	};
 	
-	quiz.event.register("tabs_done", function(e){
+	quiz.event.register("session.tabs_loaded", function(e){
 		callback("tabs");
 	});
 	
-	quiz.event.register("socket_open", function(e){
+	quiz.event.register("session.socket_open", function(e){
 		callback("socket");
 	});
 	

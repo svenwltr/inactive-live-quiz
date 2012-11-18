@@ -22,18 +22,17 @@ quiz.socket = (new function(){
 	{
 		var e = [ event, data ];
 		socket.send(JSON.stringify(e));
-		console.log("WebSocket:", e);
 	};
 	
 
 	
 	var onopen = function () {
-		quiz.event.trigger("socket_open");
+		quiz.event.trigger("session.socket_open");
 	};
 	
 
 	var onerror = function (error) {
-		quiz.event.trigger("error", {
+		quiz.event.trigger("session.error", {
 			title: "WebSocket-Fehler",
 			text: "Die Verbindung zum Webserver ging verloren. Bitte versuchen Sie es erneut.",
 		});
@@ -45,7 +44,6 @@ quiz.socket = (new function(){
 		var event = j[0];
 		var data = j[1];
 		
-		event = "ws_" + event;
 		quiz.event.trigger(event, data);
 	};
 	

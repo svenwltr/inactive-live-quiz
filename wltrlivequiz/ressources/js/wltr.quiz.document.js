@@ -29,7 +29,7 @@ quiz.document = (new function(){
 
 		$("a").removeClass("active");
 		$("a[href=#"+name+"]").addClass("active");
-		quiz.event.trigger("session.set_page", name);
+		quiz.event.trigger("local:session.set_page", name);
 	}
 	
 	/**
@@ -180,13 +180,13 @@ quiz.document.moderator.setup = (new function(){
 	var form_update = function()
 	{
 		/* TODO delay sending */
-		quiz.event.trigger("setup.form_update", data(), true);
+		quiz.event.trigger("remote:setup.form_update", data(), true);
 	}
 	
 	var quiz_start = function()
 	{
-		quiz.event.trigger("setup.form_update", data(), true);
-		quiz.event.trigger("setup.quiz_start", null, true);
+		quiz.event.trigger("remote:setup.form_update", data(), true);
+		quiz.event.trigger("remote:setup.quiz_start", null, true);
 	}
 	
 	$(FORM).live('submit', function(){

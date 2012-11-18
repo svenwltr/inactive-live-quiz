@@ -31,41 +31,74 @@ quiz.event = (new function()
 {
 	var module = {};
 	
-	var events = {
-		
-	};
+	var registered_events = {};
 	
-	module.register = function(event, func)
-	{
-		if(events[event] == undefined)
-		{
-			events[event] = new Array();
+	var parse_eventname = function(event) {
+		var local;
+		var remote;
+		
+		if(event.substr(0,6) == "local:") {
+			local = true;
+			remote = false;
+			event = event.substr(6);
+			
+		} else if(event.substr(0,7) == "remote:") {
+			local = false;
+			remote = true;
+			event = event.substr(7);
+			
+		} else {
+			local = true;
+			remote = true;
 		}
-		events[event].push(func);
+		
+		return {
+			'event': event,
+			'local': local,
+			'remote': remote,
+		}
+	}
+	
+	module.register = function(eventname, cb)
+	{
+		e = parse_eventname(eventname);
+		
+		if(registered_events[e.event] == undefined)
+			registered_events[e.event] = new Array();
+		
+		registered_events[e.event].push({
+			'callback': cb,
+			'remote': e.remote,
+			'local': e.local
+		});
 	};
 	
-	module.unregister = function(event, ident)
+	module.unregister = function(eventname, ident)
 	{
-		
+		/* TODO */
 	};
 	
-	module.trigger = function(event, data, send)
+	module.trigger = function(eventname, data)
 	{
-		console.log("Trigger: " + event, data, send);
+		console.log("Trigger: " + eventname, data);
 		
-		if(send) {
-			quiz.socket.send(event, data);
+		e = parse_eventname(eventname);
+		
+		if(e.remote == true) {
+			quiz.socket.send(e.event, data);
 		}
 
-		if(events[event] == undefined) {
-			return;
+		if(e.local == true) {
+			try {
+				for (var i = 0; i < registered_events[e.event].length; i++) {
+				    r = registered_events[e.event][i];
+				    r.callback(e.event, data);
+				}
+			}
+			/* Must catch error if events[e.event] is undefined. Typecheck
+			 * doesn't work and I don't know why :-@ ... or I am too stupid! */
+			catch(err){ }
 		}
-		
-		for (var i = 0; i < events[event].length; i++) {
-		    cb = events[event][i];
-		    cb(event, data);
-		}
-		
 	};
 	
 	

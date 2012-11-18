@@ -27,12 +27,12 @@ quiz.socket = (new function(){
 
 	
 	var onopen = function () {
-		quiz.event.trigger("session.socket_open");
+		quiz.event.trigger("local:session.socket_open");
 	};
 	
 
 	var onerror = function (error) {
-		quiz.event.trigger("session.error", {
+		quiz.event.trigger("local:session.error", {
 			title: "WebSocket-Fehler",
 			text: "Die Verbindung zum Webserver ging verloren. Bitte versuchen Sie es erneut.",
 		});

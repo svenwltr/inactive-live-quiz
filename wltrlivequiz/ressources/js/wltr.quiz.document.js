@@ -106,7 +106,7 @@ quiz.document.overlay = (new function(){
 		tpl = get_error_tpl();
 		tpl.find("h1").text(data.title);
 		tpl.find("p").text(data.text);
-		quiz.document.set_body(tpl);
+		$("body").append(tpl);
 	});
 	
 	/* END */
@@ -180,13 +180,13 @@ quiz.document.moderator.setup = (new function(){
 	var form_update = function()
 	{
 		/* TODO delay sending */
-		quiz.event.trigger("remote:setup.form_update", data(), true);
+		quiz.event.trigger("remote:setup.form_update", data());
 	}
 	
 	var quiz_start = function()
 	{
-		quiz.event.trigger("remote:setup.form_update", data(), true);
-		quiz.event.trigger("remote:setup.quiz_start", null, true);
+		quiz.event.trigger("remote:setup.form_update", data());
+		quiz.event.trigger("remote:setup.quiz_start", null);
 	}
 	
 	$(FORM).live('submit', function(){

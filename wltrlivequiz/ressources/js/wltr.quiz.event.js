@@ -31,29 +31,32 @@ quiz.event = (new function()
 {
 	var module = {};
 	
-	var registered_events = {};
+	var list_local = {};
+	var list_remote = {};
 	
-	var parse_eventname = function(event) {
+	
+	var parse_eventname = function(eventname) {
 		var local;
 		var remote;
 		
-		if(event.substr(0,6) == "local:") {
+		if(eventname.substr(0,6) == "local:") {
 			local = true;
 			remote = false;
-			event = event.substr(6);
+			ident = eventname.substr(6);
 			
-		} else if(event.substr(0,7) == "remote:") {
+		} else if(eventname.substr(0,7) == "remote:") {
 			local = false;
 			remote = true;
-			event = event.substr(7);
+			ident = eventname.substr(7);
 			
 		} else {
 			local = true;
 			remote = true;
+			ident = eventname;
 		}
 		
 		return {
-			'event': event,
+			'ident': ident,
 			'local': local,
 			'remote': remote,
 		}
@@ -63,45 +66,56 @@ quiz.event = (new function()
 	{
 		e = parse_eventname(eventname);
 		
-		if(registered_events[e.event] == undefined)
-			registered_events[e.event] = new Array();
-		
-		registered_events[e.event].push({
-			'callback': cb,
-			'remote': e.remote,
-			'local': e.local
-		});
-	};
-	
-	module.unregister = function(eventname, ident)
-	{
-		/* TODO */
+		if(e.local == true) {
+			if(!(e.ident in list_local))
+				list_local[e.ident] = new Array();
+			
+			list_local[e.ident].push(cb);
+		}
+			
+		if(e.remote == true) {
+			if(!(e.ident in list_remote))
+				list_remote[e.ident] = new Array();
+			
+			list_remote[e.ident].push(cb);
+		}
 	};
 	
 	module.trigger = function(eventname, data)
 	{
 		console.log("Trigger: " + eventname, data);
-		
 		e = parse_eventname(eventname);
 		
 		if(e.remote == true) {
-			quiz.socket.send(e.event, data);
+			quiz.socket.send(e.ident, data);
 		}
 
 		if(e.local == true) {
-			try {
-				for (var i = 0; i < registered_events[e.event].length; i++) {
-				    r = registered_events[e.event][i];
-				    r.callback(e.event, data);
+			if(e.ident in list_local) {
+				list = list_local[e.ident];
+				for(var i=0; i<list.length; i++) {
+					cb = list[i];
+					cb(e.ident, data);
 				}
 			}
-			/* Must catch error if events[e.event] is undefined. Typecheck
-			 * doesn't work and I don't know why :-@ ... or I am too stupid! */
-			catch(err){ }
+			
 		}
 	};
 	
-	
+	module.socket_event = function(eventname, data)
+	{
+		console.log("Socket Event: " + eventname, data);
+		e = parse_eventname(eventname);
+		
+		if(e.ident in list_remote) {
+			list = list_local[e.ident];
+			for(var i=0; i<list.length; i++) {
+				cb = list[i];
+				cb(e.ident, data);
+			}
+		}
+	};
+
 	return module;
 }());
 

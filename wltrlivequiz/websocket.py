@@ -17,13 +17,7 @@ class QuizWebSocket(tornado.websocket.WebSocketHandler):
         for ws in QuizWebSocket.all:
             ws.send(event, data)
 
-    @staticmethod
-    def forward(sender, event, data):
-        for ws in QuizWebSocket.all:
-            if ws is sender:
-                continue
-            ws.send(event, data)
-    
+
     def open(self): #@ReservedAssignment
         QuizWebSocket.all.append(self)
 

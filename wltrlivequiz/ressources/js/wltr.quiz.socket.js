@@ -44,11 +44,15 @@ quiz.socket = (new function(){
 		var event = j[0];
 		var data = j[1];
 		
-		quiz.event.trigger(event, data);
+		quiz.event.socket_event(event, data);
 	};
 	
 	
 	var onclose = function(e) {
+		quiz.event.trigger("local:session.error", {
+			title: "WebSocket-Fehler",
+			text: "Die Verbindung zum Webserver ging verloren. Bitte versuchen Sie es erneut.",
+		});
 	}
 
 	

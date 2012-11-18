@@ -13,20 +13,12 @@ a {
 
 
 .overlay {
+	background: #F2F4F0;
 	position: absolute;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	right: 0;
-}
-
-.overlay-error {
-	background: #E1A19D;
-	
-}
-
-.overlay-wait {
-	background: #F2F4F0;
 }
 
 .overlay div {

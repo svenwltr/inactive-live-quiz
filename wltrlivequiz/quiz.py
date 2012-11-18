@@ -9,11 +9,6 @@ class Quiz(object):
         QuizWebSocket.send_all(event, data)
     
     
-    def forward(self, sender, event, data):
-        from websocket import QuizWebSocket
-        QuizWebSocket.forward(sender, event, data)
-
-    
     def recv(self, ws, event, data):
         mname = "on_%s" % event.replace('.', '_')
         
@@ -29,7 +24,7 @@ class Quiz(object):
         teams = [t for t in data['teams'] if t] # remove empty ones
         teams.sort()
         
-        self.forward(ws, "setup.form_update", data)
+        self.send("setup.form_update", data)
 
 
 

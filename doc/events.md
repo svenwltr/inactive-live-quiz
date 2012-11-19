@@ -13,4 +13,7 @@ Events
  - setup.*
    - setup.form_options
    - setup.form_update
+   - setup.form_validation
    - setup.quiz_start
+ - data.*
+   - data.team_update

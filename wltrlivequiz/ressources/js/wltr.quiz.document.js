@@ -129,8 +129,7 @@ quiz.document.display = (new function(){
 	};
 	
 	
-	quiz.event.register("setup.form_update", function(event, data){
-		teams = data['teams'];
+	quiz.event.register("data.team_update", function(event, teams){
 		var ul = $("<ul>");
 		
 		for (var i=0;i<teams.length;i++) {

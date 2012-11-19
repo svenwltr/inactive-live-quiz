@@ -1,13 +1,10 @@
 
 import logging
 
+from websocket import QuizWebSocket
+
+
 class Quiz(object):
-    
-    
-    def send(self, event, data):
-        from websocket import QuizWebSocket
-        QuizWebSocket.send_all(event, data)
-    
     
     def recv(self, ws, event, data):
         mname = "on_%s" % event.replace('.', '_')
@@ -24,7 +21,7 @@ class Quiz(object):
         teams = [t for t in data['teams'] if t] # remove empty ones
         teams.sort()
         
-        self.send("setup.form_update", data)
+        QuizWebSocket.send_all("data.team_update", teams)
 
 
 

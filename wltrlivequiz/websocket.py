@@ -4,7 +4,6 @@ import logging
 import tornado.websocket
 
 
-from quiz import quiz
 
 
 
@@ -34,6 +33,7 @@ class QuizWebSocket(tornado.websocket.WebSocketHandler):
     
     
     def on_message(self, message):
+        from quiz import quiz
         try:
             event, data = json.loads(message)
             quiz.recv(self, event, data)

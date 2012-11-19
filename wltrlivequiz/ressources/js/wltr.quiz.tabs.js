@@ -36,7 +36,7 @@ quiz.tabs = (new function()
 	};
 	
 	$.when.apply(null, jqXHRs).then(function(){
-		quiz.event.trigger("local:session.tabs_loaded");
+		quiz.event.ready.done("tabs");
 	})
 	
 	module.show = function(name) {

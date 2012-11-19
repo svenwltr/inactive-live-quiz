@@ -5,8 +5,6 @@ Events
 ------
 
  - session.*
-   - session.tabs_loaded
-   - session.socket_open
    - session.ready
    - session.set_page
    - session.error

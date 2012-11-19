@@ -121,33 +121,30 @@ quiz.event = (new function()
 
 
 quiz.event.ready = (new function(){
+	var module = {};
+	
 	var required = {
 		tabs: false,
 		dom: false,
 		socket: false,
+		scripts: false,
 	};
 	
-	var callback = function(name){
+	module.done = function(name) {
 		required[name] = true
 		
-		if(required.tabs && required.dom && required.socket) {
+		if(required.tabs && required.dom && required.socket && required.scripts) {
 			quiz.event.trigger("session.ready"); 
 		};
-	};
-	
-	quiz.event.register("session.tabs_loaded", function(e){
-		callback("tabs");
-	});
-	
-	quiz.event.register("session.socket_open", function(e){
-		callback("socket");
-	});
+	}
 	
 	$(document).ready(function() {
-		callback("dom");
+		module.done("dom");
 	});
 	
-	return {};
+	
+	
+	return module;
 }());
 
 

@@ -27,7 +27,7 @@ quiz.socket = (new function(){
 
 	
 	var onopen = function () {
-		quiz.event.trigger("local:session.socket_open");
+		quiz.event.ready.done("socket");
 	};
 	
 

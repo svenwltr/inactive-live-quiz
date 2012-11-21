@@ -3,12 +3,14 @@ import logging
 
 from websocket import QuizWebSocket
 
+from validator import Validator
+
 
 class Quiz(object):
 
     def __init__(self):
-        self.startup_events = {};
-        
+        self.startup_events = {}
+
     
     def recv(self, ws, event, data):
         mname = "on_%s" % event.replace('.', '_')
@@ -31,6 +33,19 @@ class Quiz(object):
         
         QuizWebSocket.send_all("data.team_update", teams)
         self.startup_events["data.team_update"] = teams
+
+        
+        validator = Validator(data)
+
+        validator.require("title", 1001)
+        validator.require("mode", 1002)
+        validator.require("catalog", 1003)
+        validator.require("questions", 1004)
+  
+        ws.send("setup.form_validation", list(validator.errors))
+
+
+
 
 
 
